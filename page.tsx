@@ -6,4 +6,3 @@ export default function DynamicLeaguePage({ params }: { params: { type: string, 
 
   return <LeaguePage leagueName={leagueName} />
 }
-
