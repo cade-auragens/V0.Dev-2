@@ -506,4 +506,3 @@ export default function AnalyticsPage({ leagueName }: AnalyticsPageProps) {
     </div>
   )
 }
-
