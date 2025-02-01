@@ -4,15 +4,15 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Player } from '../types/player'
 import { Input } from "@/components/ui/input"
 
-interface TreatedViewProps {
+interface WatchlistViewProps {
   players: Player[];
-  onRemoveFromTreated: (playerIds: string[]) => void;
-  onAddToWatchlist: (playerIds: string[]) => void;
+  onRemoveFromWatchlist: (playerIds: string[]) => void;
+  onAddToTreated: (playerIds: string[]) => void;
   onCommentChange: (playerName: string, comment: string) => void;
   onNoteChange: (playerName: string, note: string) => void;
 }
 
-export default function TreatedView({ players, onRemoveFromTreated, onAddToWatchlist, onCommentChange, onNoteChange }: TreatedViewProps) {
+export default function WatchlistView({ players, onRemoveFromWatchlist, onAddToTreated, onCommentChange, onNoteChange }: WatchlistViewProps) {
   const [selectedPlayers, setSelectedPlayers] = React.useState<string[]>([]);
 
   const handleSelectAll = (checked: boolean) => {
@@ -34,20 +34,20 @@ export default function TreatedView({ players, onRemoveFromTreated, onAddToWatch
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <h2 className="text-2xl font-bold">Treated List</h2>
+        <h2 className="text-2xl font-bold">Watchlist</h2>
         <div>
           <Button 
-            onClick={() => onRemoveFromTreated(selectedPlayers)}
+            onClick={() => onRemoveFromWatchlist(selectedPlayers)}
             disabled={selectedPlayers.length === 0}
             className="mr-2"
           >
-            Remove Selected from Treated
+            Remove Selected from Watchlist
           </Button>
           <Button 
-            onClick={() => onAddToWatchlist(selectedPlayers)}
+            onClick={() => onAddToTreated(selectedPlayers)}
             disabled={selectedPlayers.length === 0}
           >
-            Add Selected to Watchlist
+            Add Selected to Treated
           </Button>
         </div>
       </div>
