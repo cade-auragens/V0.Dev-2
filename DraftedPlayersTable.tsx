@@ -45,4 +45,3 @@ export default function DraftedPlayersTable({ players }: DraftedPlayersTableProp
     </Table>
   )
 }
-
