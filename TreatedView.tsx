@@ -106,4 +106,3 @@ export default function TreatedView({ players, onRemoveFromTreated, onAddToWatch
     </div>
   );
 }
-
