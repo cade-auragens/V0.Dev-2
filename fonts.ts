@@ -9,4 +9,3 @@ export const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
 })
-
