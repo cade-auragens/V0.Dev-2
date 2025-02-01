@@ -115,4 +115,3 @@ export default function EventsView({ onEventAdded, listTypes }: EventsViewProps)
     </div>
   )
 }
-
