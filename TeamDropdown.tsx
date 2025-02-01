@@ -176,4 +176,3 @@ export default function TeamDropdown({ league, onTeamSelect }: TeamDropdownProps
     </DropdownMenu>
   )
 }
-
