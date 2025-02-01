@@ -119,4 +119,3 @@ export default function RetiredPlayersTable({ players, onListTypeChange, onNoteC
     </Table>
   )
 }
-
