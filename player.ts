@@ -144,4 +144,3 @@ export interface DraftedPlayer {
     [key: string]: string | number
   }
 }
-
