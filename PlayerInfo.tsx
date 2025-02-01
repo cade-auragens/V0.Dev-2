@@ -3,27 +3,33 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Logo from './Logo'
-import { Player, ListType, LeagueHistory, Injury } from '../types/player'
-import { Input } from "@/components/ui/input";
+import Logo from "./Logo"
+import type { Player, ListType, LeagueHistory, Injury } from "../types/player"
+import { Input } from "@/components/ui/input"
 
 interface PlayerInfoProps {
-  player: Player;
-  leagueName: string;
-  onClose: () => void;
-  onListTypeChange: (newListType: ListType) => void;
-  onCommentChange: (playerName: string, comment: string) => void;
-  onNoteChange: (playerName: string, note: string) => void;
+  player: Player
+  leagueName: string
+  onClose: () => void
+  onListTypeChange: (newListType: ListType) => void
+  onCommentChange: (playerName: string, comment: string) => void
+  onNoteChange: (playerName: string, note: string) => void
 }
 
-export default function PlayerInfo({ player, leagueName, onClose, onListTypeChange, onCommentChange, onNoteChange }: PlayerInfoProps) {
+export default function PlayerInfo({
+  player,
+  leagueName,
+  onClose,
+  onListTypeChange,
+  onCommentChange,
+  onNoteChange,
+}: PlayerInfoProps) {
   const renderLeagueHistory = () => {
-    if (!player.leagueHistory) return null;
+    if (!player.leagueHistory) return null
 
     switch (leagueName.toUpperCase()) {
-      case 'MLB':
+      case "MLB":
         return (
           <Accordion type="single" collapsible className="w-full">
             {player.leagueHistory.map((history: LeagueHistory, index: number) => (
@@ -38,16 +44,20 @@ export default function PlayerInfo({ player, leagueName, onClose, onListTypeChan
               </AccordionItem>
             ))}
           </Accordion>
-        );
-      case 'NFL':
-      case 'NBA':
-      case 'NHL':
-        const relevantHistory = player.leagueHistory.find(h => h.league.toUpperCase() === leagueName.toUpperCase());
-        return relevantHistory ? renderInjuryTable(relevantHistory.injuries) : <p>No injury history available for this league.</p>;
+        )
+      case "NFL":
+      case "NBA":
+      case "NHL":
+        const relevantHistory = player.leagueHistory.find((h) => h.league.toUpperCase() === leagueName.toUpperCase())
+        return relevantHistory ? (
+          renderInjuryTable(relevantHistory.injuries)
+        ) : (
+          <p>No injury history available for this league.</p>
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const renderInjuryTable = (injuries: Injury[]) => (
     <Table>
@@ -70,7 +80,22 @@ export default function PlayerInfo({ player, leagueName, onClose, onListTypeChan
         ))}
       </TableBody>
     </Table>
-  );
+  )
+
+  const getTreatmentProtocol = (injuryType: string): string => {
+    switch (injuryType.toLowerCase()) {
+      case "acl":
+        return "Rest, ice, compression, and elevation (RICE). Physical therapy focusing on range of motion and strength exercises. Possible surgical intervention based on severity."
+      case "concussion":
+        return "Cognitive and physical rest. Gradual return to activities under medical supervision. Neurological evaluations and follow-ups."
+      case "ankle sprain":
+        return "RICE protocol. Ankle stabilization exercises. Gradual return to weight-bearing activities. Possible physical therapy for severe cases."
+      case "hamstring":
+        return "RICE protocol initially. Gentle stretching and strengthening exercises. Gradual return to sports-specific activities. Focus on proper warm-up routines."
+      default:
+        return "Consult with team physician for a tailored treatment plan. General protocol includes rest, appropriate rehabilitation exercises, and gradual return to play."
+    }
+  }
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
@@ -93,24 +118,24 @@ export default function PlayerInfo({ player, leagueName, onClose, onListTypeChan
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="watchlist"
-                    checked={player.listType === 'Watched'}
-                    onCheckedChange={(checked) => onListTypeChange(checked ? 'Watched' : player.listType)}
+                    checked={player.listType === "Watched"}
+                    onCheckedChange={(checked) => onListTypeChange(checked ? "Watched" : player.listType)}
                   />
                   <Label htmlFor="watchlist">Add to Watchlist</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="treated"
-                    checked={player.listType === 'Treated'}
-                    onCheckedChange={(checked) => onListTypeChange(checked ? 'Treated' : player.listType)}
+                    checked={player.listType === "Treated"}
+                    onCheckedChange={(checked) => onListTypeChange(checked ? "Treated" : player.listType)}
                   />
                   <Label htmlFor="treated">Mark as Treated</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="priority"
-                    checked={player.listType === 'Priority'}
-                    onCheckedChange={(checked) => onListTypeChange(checked ? 'Priority' : player.listType)}
+                    checked={player.listType === "Priority"}
+                    onCheckedChange={(checked) => onListTypeChange(checked ? "Priority" : player.listType)}
                   />
                   <Label htmlFor="priority">Add to Priority</Label>
                 </div>
@@ -119,44 +144,77 @@ export default function PlayerInfo({ player, leagueName, onClose, onListTypeChan
             <div className="md:w-2/3">
               <DialogTitle className="text-3xl font-bold text-blue-600 mb-4">{player.name}</DialogTitle>
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <p><strong>Position:</strong> {player.position}</p>
-                <p><strong>IRP:</strong> {player.irp.toFixed(2)}%</p>
-                <p><strong>Height:</strong> {player.height}</p>
-                <p><strong>Weight:</strong> {player.weight}</p>
-                <p><strong>Experience:</strong> {player.experience} years</p>
-                <p><strong>Contract Total:</strong> ${player.contractTotal.toLocaleString()}</p>
-                <p><strong>Contract Length:</strong> {player.contractLength} years</p>
-                <p><strong>Contract Year:</strong> Year {player.contractYear} of {player.contractLength}</p>
-                <p><strong>Salary:</strong> ${player.salary.toLocaleString()}</p>
-                <p><strong>Agent:</strong> {player.agent}</p>
-                <p><strong>Agent Email:</strong> {player.agentEmail}</p>
-                <p><strong>Status:</strong> {player.status}</p>
-                <p><strong>Date Injured:</strong> {player.dateInjured}</p>
-                <p><strong>ERD:</strong> {player.erd}</p>
-                <p><strong>Injury Type:</strong> {player.injuryType}</p>
-                <p><strong>Injury Grade:</strong> {player.injuryGrade}</p>
+                <p>
+                  <strong>Position:</strong> {player.position}
+                </p>
+                <p>
+                  <strong>IRP:</strong> {player.irp.toFixed(2)}%
+                </p>
+                <p>
+                  <strong>Height:</strong> {player.height}
+                </p>
+                <p>
+                  <strong>Weight:</strong> {player.weight}
+                </p>
+                <p>
+                  <strong>Experience:</strong> {player.experience} years
+                </p>
+                <p>
+                  <strong>Contract Total:</strong> ${player.contractTotal.toLocaleString()}
+                </p>
+                <p>
+                  <strong>Contract Length:</strong> {player.contractLength} years
+                </p>
+                <p>
+                  <strong>Contract Year:</strong> Year {player.contractYear} of {player.contractLength}
+                </p>
+                <p>
+                  <strong>Salary:</strong> ${player.salary.toLocaleString()}
+                </p>
+                <p>
+                  <strong>Agent:</strong> {player.agent}
+                </p>
+                <p>
+                  <strong>Agent Email:</strong> {player.agentEmail}
+                </p>
+                <p>
+                  <strong>Status:</strong> {player.status}
+                </p>
+                <p>
+                  <strong>Date Injured:</strong> {player.dateInjured}
+                </p>
+                <p>
+                  <strong>ERD:</strong> {player.erd}
+                </p>
+                <p>
+                  <strong>Injury Type:</strong> {player.injuryType}
+                </p>
+                <p>
+                  <strong>Injury Grade:</strong> {player.injuryGrade}
+                </p>
               </div>
               <h3 className="text-xl font-semibold mb-2">Comments</h3>
-              <Input 
-                type="text" 
-                value={player.comments} 
+              <Input
+                type="text"
+                value={player.comments}
                 onChange={(e) => onCommentChange(player.name, e.target.value)}
                 className="w-full mb-4"
               />
               <h3 className="text-xl font-semibold mb-2">Notes</h3>
-              <Input 
-                type="text" 
-                value={player.notes} 
+              <Input
+                type="text"
+                value={player.notes}
                 onChange={(e) => onNoteChange(player.name, e.target.value)}
                 className="w-full mb-4"
               />
               <h3 className="text-xl font-semibold mb-2">Injury History</h3>
               {renderLeagueHistory()}
+              <h3 className="text-xl font-semibold mb-2">Pre-lim Treatment Protocol</h3>
+              <p className="text-sm text-gray-600 mb-4">{getTreatmentProtocol(player.injuryType)}</p>
             </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
-
