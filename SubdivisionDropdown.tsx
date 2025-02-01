@@ -1187,4 +1187,3 @@ export default function SubdivisionDropdown({ onSubdivisionSelect, sport }: Subd
     </DropdownMenu>
   )
 }
-
